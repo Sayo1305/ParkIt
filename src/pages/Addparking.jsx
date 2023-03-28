@@ -41,13 +41,6 @@ const Addparking = () => {
   return (
     <div className="w-full h-auto bg-lime-100">
       <Navbar />
-      <button
-        type="button"
-        onClick={handle_contract}
-        className="bg-green-500 p-5 rounded-md"
-      >
-        Click
-      </button>
 <Input_form/>
 
     </div>

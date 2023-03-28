@@ -1,5 +1,7 @@
+import { ref, set } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { Appcontext } from "../context/Appcontext";
+import storage  from '../firebase';
 
 const Input_form = () => {
   const context = useContext(Appcontext);
@@ -48,6 +50,12 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
       select_: false,
     },
   ]);
+  let metadata = JSON.stringify({
+    "place":place,
+    "area":area,
+    "pincode":pincode,
+    "fileUrl":ImageUpload
+  })
   const handle_submit = async () => {
     if (ImageUpload) {
       let formdata = new FormData();
@@ -56,20 +64,22 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
       formdata.append("pincode", pincode);
       formdata.append("file", ImageUpload);
       console.log(apiKey);
-      await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+      await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
         method: "POST",
         headers: {
           pinata_api_key: apiKey,
           pinata_secret_api_key: secretKey,
-          // "Content-Type": `multipart/form-data`,
+          "Content-Type": `application/json`,
         },
-        body: formdata,
+        body: metadata,
       })
         .catch((Err) => console.log(Err))
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          console.log(formdata)
+          // set(ref(storage  , `/walllet/${Walletaddress}`) , {
+          //   name : "fsjs",
+          // });
         });
       // const imghash = `ipfs://${resfile.data.IpfsHash}`;
     } else {
@@ -84,14 +94,18 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
       </div>
       <div className="w-5/6 bg-slate-300 shadow-md flex flex-col items-center gap-2 p-5 rounded-md mx-auto my-0">
         <div>
-          <div className="relative bg-transparent text-center border-2 border-dashed  w-[100px] border-black  h-[50px]">
+        <div className="relative bg-transparent text-center border-2 border-dashed  w-[100px] border-black  h-[50px]">
             <input
               className="bg-blue-500 opacity-0 w-[100px] h-[50px] absolute top-0"
               type={"file"}
               onChange={(e) => {
                 let src = e.target.files[0];
-                setImageupload(src);
-                setImagefile(URL.createObjectURL(src));
+                setImagefile(URL.createObjectURL(src))
+                let reader = new FileReader();
+                reader.readAsDataURL(src);
+                reader.onloadend = function() {
+                  setImageupload(reader.result);
+                }
               }}
             ></input>
             Upload pic
