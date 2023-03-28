@@ -14,12 +14,13 @@ const Addparking = () => {
       .transfer({ to: "tz1fvHG5YrcbyrVZy3khyGGgAC5Q2MvQ7cTM", amount: 1 })
       .then(async (op) => {
         console.log(await op.confirmation);
+
       });
   };
   const handle_contract = async()=>{
     await Tezos.setWalletProvider(wallet);
-   await Tezos.wallet
-  .transfer({ to: 'tz1UfJXMZauJyQNZe76T1GVPQhBkxCQv6tyN', amount: 100 })
+  await Tezos.wallet
+  .transfer({ to: 'tz1NhNv9g7rtcjyNsH8Zqu79giY5aTqDDrzB', amount: 100 })
   .send()
   .then((op) => {
     console.log(`Hash: ${op.opHash}`);
