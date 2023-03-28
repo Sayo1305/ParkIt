@@ -3,9 +3,14 @@ import { Appcontext } from "../context/Appcontext";
 
 const Input_form = () => {
   const context = useContext(Appcontext);
+  const apiKey = process.env.REACT_APP_API_KEY_;
+const secretKey = process.env.REACT_APP_SECRET_KEY_;
   const [Imagefile, setImagefile] = useState("");
   const [ImageUpload, setImageupload] = useState("");
   const { Walletaddress } = context;
+  const [place, setPlace] = useState("");
+  const [area, setArea] = useState("");
+  const [pincode, setPincode] = useState("");
   const [selected_day, setselected_day] = useState([
     {
       id: 0,
@@ -45,23 +50,26 @@ const Input_form = () => {
   ]);
   const handle_submit = async () => {
     if (ImageUpload) {
-      const formdata = new FormData();
+      let formdata = new FormData();
+      formdata.append("place", place);
+      formdata.append("area", area);
+      formdata.append("pincode", pincode);
       formdata.append("file", ImageUpload);
-      console.log(process.env.REACT_APP_API_KEY)
+      console.log(apiKey);
       await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
         method: "POST",
         headers: {
-          "pinata_api_key": process.env.REACT_APP_API_KEY_,
-          "pinata_secret_api_key":
-            process.env.REACT_APP_SECRET_KEY_,
-          "Content-Type": `multipart/form-data; boundary=${formdata._boundary}`
+          pinata_api_key: apiKey,
+          pinata_secret_api_key: secretKey,
+          // "Content-Type": `multipart/form-data`,
         },
-        body: FormData,
+        body: formdata,
       })
         .catch((Err) => console.log(Err))
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
+          console.log(formdata)
         });
       // const imghash = `ipfs://${resfile.data.IpfsHash}`;
     } else {
@@ -99,6 +107,7 @@ const Input_form = () => {
           <input
             className="outline-none bg-slate-100 p-2 text-xl rounded-md"
             type={"text"}
+            onChange={(e) => setPlace(e.target.value)}
           ></input>
         </div>
         <div className="flex flex-col w-full">
@@ -106,6 +115,7 @@ const Input_form = () => {
           <input
             className="outline-none bg-slate-100 p-2 text-xl rounded-md"
             type={"text"}
+            onChange={(e) => setArea(e.target.value)}
           ></input>
         </div>
         <div className="flex flex-col w-full">
@@ -113,11 +123,12 @@ const Input_form = () => {
           <input
             className="outline-none bg-slate-100 p-2 text-xl rounded-md"
             type={"text"}
+            onChange={(e) => setPincode(e.target.value)}
           ></input>
         </div>
         <div className="flex flex-col w-full">
           <label className="font-semibold italic">Wallet address</label>
-          <input
+          <input disabled
             className="outline-none bg-slate-100 p-2 text-xl rounded-md"
             type={"text"}
             defaultValue={Walletaddress}
@@ -130,12 +141,12 @@ const Input_form = () => {
               <div
                 id="day_map"
                 onClick={() => {
-                  let temp = selected_day;
-                  temp[idx].select_ = !temp[idx].select_;
-                  setselected_day(temp);
-                  console.log(selected_day);
+                  const newSelectedDay = [...selected_day]; // create a new copy of the array
+                  newSelectedDay[idx].select_ = !newSelectedDay[idx].select_; // modify the new copy
+                  setselected_day(newSelectedDay); // set the state to the new copy
                 }}
-                className={`p-2 bg-white rounded-md shadow-md cursor-pointer active:bg-lime-400 focus:bg-lime-500`}
+                className={`p-2 bg-white rounded-md shadow-md cursor-pointer hover:bg-lime-400 focus:bg-lime-500
+    ${day.select_ ? "bg-lime-400" : ""}`}
                 key={idx}
               >
                 {day.day}
