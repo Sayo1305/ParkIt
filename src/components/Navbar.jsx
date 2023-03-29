@@ -20,7 +20,7 @@ const Navbar = () => {
         console.log(err);
       }
     };
-    if(walletaddress === "")
+    if(window.location.pathname !== '/' && walletaddress === "")
     {
       handle_connect();
     }
@@ -43,14 +43,6 @@ const Navbar = () => {
   };
   return (
     <div className="w-full p-4  bg-slate-100 shadow-md flex justify-between items-center">
-      <div
-       className="cursor-pointer"
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Logo
-      </div>
       <div className="text-2xl font-bold italic cursor-pointer" onClick={() => {
           navigate("/");
         }}>

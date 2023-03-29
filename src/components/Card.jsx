@@ -7,7 +7,7 @@ const Card = ({data}) => {
       <div>{data.area}</div>
       <div>{data.place}</div>
       <div>{data.pincode}</div>
-      <div className='bg-red-200 p-1 text-center rounded-lg cursor-pointer'>Button</div>
+      <div className='bg-red-200 p-1 text-center rounded-lg cursor-pointer'>Rent Now</div>
     </div>
   )
 }

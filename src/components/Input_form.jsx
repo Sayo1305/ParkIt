@@ -1,12 +1,13 @@
-import { ref, set } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { Appcontext } from "../context/Appcontext";
-import storage  from '../firebase';
+import  {app} from '../firebase'
+import { getDatabase, ref , set } from "firebase/database";
 
 const Input_form = () => {
+  const db  = getDatabase();
   const context = useContext(Appcontext);
   const apiKey = process.env.REACT_APP_API_KEY_;
-const secretKey = process.env.REACT_APP_SECRET_KEY_;
+  const secretKey = process.env.REACT_APP_SECRET_KEY_;
   const [Imagefile, setImagefile] = useState("");
   const [ImageUpload, setImageupload] = useState("");
   const { Walletaddress } = context;
@@ -51,11 +52,11 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
     },
   ]);
   let metadata = JSON.stringify({
-    "place":place,
-    "area":area,
-    "pincode":pincode,
-    "fileUrl":ImageUpload
-  })
+    place: place,
+    area: area,
+    pincode: pincode,
+    fileUrl: ImageUpload,
+  });
   const handle_submit = async () => {
     if (ImageUpload) {
       let formdata = new FormData();
@@ -63,7 +64,6 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
       formdata.append("area", area);
       formdata.append("pincode", pincode);
       formdata.append("file", ImageUpload);
-      console.log(apiKey);
       await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
         method: "POST",
         headers: {
@@ -76,12 +76,11 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
         .catch((Err) => console.log(Err))
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
-          // set(ref(storage  , `/walllet/${Walletaddress}`) , {
-          //   name : "fsjs",
-          // });
+          // console.log(res);
+          set(ref(db , `/${Walletaddress}/${crypto.randomUUID()}`) , res);
         });
       // const imghash = `ipfs://${resfile.data.IpfsHash}`;
+      // console.log(imghash)
     } else {
       console.log("not");
     }
@@ -94,18 +93,18 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
       </div>
       <div className="w-5/6 bg-slate-300 shadow-md flex flex-col items-center gap-2 p-5 rounded-md mx-auto my-0">
         <div>
-        <div className="relative bg-transparent text-center border-2 border-dashed  w-[100px] border-black  h-[50px]">
+          <div className="relative bg-transparent text-center border-2 border-dashed  w-[100px] border-black  h-[50px]">
             <input
               className="bg-blue-500 opacity-0 w-[100px] h-[50px] absolute top-0"
               type={"file"}
               onChange={(e) => {
                 let src = e.target.files[0];
-                setImagefile(URL.createObjectURL(src))
+                setImagefile(URL.createObjectURL(src));
                 let reader = new FileReader();
                 reader.readAsDataURL(src);
-                reader.onloadend = function() {
+                reader.onloadend = function () {
                   setImageupload(reader.result);
-                }
+                };
               }}
             ></input>
             Upload pic
@@ -142,7 +141,8 @@ const secretKey = process.env.REACT_APP_SECRET_KEY_;
         </div>
         <div className="flex flex-col w-full">
           <label className="font-semibold italic">Wallet address</label>
-          <input disabled
+          <input
+            disabled
             className="outline-none bg-slate-100 p-2 text-xl rounded-md"
             type={"text"}
             defaultValue={Walletaddress}
