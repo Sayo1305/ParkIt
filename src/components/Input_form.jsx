@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Appcontext } from "../context/Appcontext";
 import  {app} from '../firebase'
 import { getDatabase, ref , set } from "firebase/database";
-
+import Swal from 'sweetalert2'
 const Input_form = () => {
   const db  = getDatabase();
   const context = useContext(Appcontext);
@@ -59,6 +59,21 @@ const Input_form = () => {
   });
   const handle_submit = async () => {
     if (ImageUpload) {
+      Swal.fire({
+        title: 'Do you want to save the changes, As it will be saved in Blockchain',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+      
       let formdata = new FormData();
       formdata.append("place", place);
       formdata.append("area", area);
@@ -112,7 +127,7 @@ const Input_form = () => {
         </div>
         <div>
           {Imagefile !== "" && (
-            <img src={Imagefile} className="w-[300px] h-[300px]" alt="d" />
+            <img src={Imagefile} className="w-[200px] h-[200px] rounded-lg" alt="d" />
           )}
         </div>
         <div className="flex flex-col w-full">

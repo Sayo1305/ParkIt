@@ -9,7 +9,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="w-1/2 my-3 mx-auto h-[1px] bg-slate-600"></div>
-      <div>contact djdjdjk lkdjpjdpodkp dpk dpokdpkd</div>
+      <div className="w-full text-center font-bold">Copyright <span className="text-purple-800">@ParkIt</span></div>
     </div>
   );
 };
