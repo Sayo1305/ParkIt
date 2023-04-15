@@ -4,8 +4,11 @@ import Home from './pages/Home';
 import { Route, Routes } from 'react-router-dom';
 import Addparking from './pages/Addparking';
 import BuyParking from './pages/BuyParking';
+// import GetDatabase from './utils/GetDatabase';
 function App() {
-
+  // useEffect(()=>{
+  //   GetDatabase();
+  // },[]);
   return (
     <div className="w-full h-screen">
       <Routes>

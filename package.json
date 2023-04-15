@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@pinata/sdk": "^2.1.0",
     "@taquito/taquito": "^16.0.0",
     "@temple-wallet/dapp": "^7.0.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,7 +17,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "stream": "^0.0.2",
-    "sweetalert2": "^6.6.1",
+    "sweetalert2": "^11.7.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
