@@ -288,6 +288,7 @@ const Input_form = () => {
                 verify: true,
                 ipfs_hash: res,
                 days : selected_day,
+                id : uuid,
               });
             });
           Swal.fire("Saved!", "", "success");

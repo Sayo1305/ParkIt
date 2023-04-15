@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 import { getDatabase, onValue, ref } from "firebase/database";
-import { Appcontext } from "../context/Appcontext";
 const BuyParking = () => {
   const db = getDatabase();
   const [places, setplaces] = useState("");
   const [originalplace, setoriginalplace] = useState([]);
   const [placelist, setplacelist] = useState([]);
-  const context = useState(Appcontext);
   useEffect(() => {
     let temparr = [];
     const get_from_base = async() => {
@@ -62,7 +60,7 @@ const BuyParking = () => {
           placelist.length === 0 && <div>No Place Found</div>
         }
         {placelist && placelist.map((val, idx) => (
-          <Card data={val} key={idx} />
+          <Card  data={val} key={idx} />
         ))}
       </div>
     </div>
