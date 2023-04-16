@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Addparking from './pages/Addparking';
 import BuyParking from './pages/BuyParking';
 import Placedetails from './pages/Placedetails';
+import Navbar from './components/Navbar';
 // import GetDatabase from './utils/GetDatabase';
 function App() {
   // useEffect(()=>{
@@ -12,6 +13,7 @@ function App() {
   // },[]);
   return (
     <div className="w-full h-screen">
+      <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/AddParking' element={<Addparking/>}></Route>

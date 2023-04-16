@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
-import Navbar from "../components/Navbar";
 import { getDatabase, onValue, ref } from "firebase/database";
 const BuyParking = () => {
   const db = getDatabase();
@@ -44,7 +43,6 @@ const BuyParking = () => {
   };
   return (
     <div>
-      <Navbar />
       <div className="p-2 flex justify-center gap-2 w-full items-center">
         <input
           type={"text"}
@@ -57,7 +55,7 @@ const BuyParking = () => {
       </div>
       <div className="grid grid-cols-4 justify-items-center w-5/6 mx-auto my-0 gap-5 p-4 flex-wrap">
         {
-          placelist.length === 0 && <div>No Place Found</div>
+          placelist.length === 0 && <div className="text-white font-semibold rounded-md bg-blue-500 p-3">No Place Found</div>
         }
         {placelist && placelist.map((val, idx) => (
           <Card  data={val} key={idx} />

@@ -5,7 +5,7 @@ const Card = ({data}) => {
   // console.log(data)
   const navigate = useNavigate();
   return (
-    <div className='bg-slate-200 w-full flex flex-col h-auto rounded-md p-2' onClick={()=>{
+    <div className='h-full w-full cursor-pointer p-3 shadow-lg bg-blue-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20   ' onClick={()=>{
       localStorage.setItem("owner_wallet_id" , data.Walletaddress);
       navigate(`/Placedetail/${data.id}`);
     }}>

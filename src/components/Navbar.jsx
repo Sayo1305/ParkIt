@@ -12,33 +12,31 @@ const Navbar = () => {
   useEffect(() => {
     const check_wallet = async () => {
       try {
-        const available = await TempleWallet.isAvailable();
-        if (!available) {
-          throw new Error("Temple Wallet not installed");
+        if(window.ethereum){
+          // Do something 
+        }else{
+          alert("install metamask extension!!")
         }
       } catch (err) {
         console.log(err);
       }
     };
-    if(window.location.pathname !== '/' && walletaddress === "")
-    {
-      handle_connect();
-    }
     check_wallet();
   }, []);
   const handle_connect = async () => {
     try {
-      const wallet = new TempleWallet("MyAwesomeDapp");
-      await wallet.connect("ghostnet");
-      // the TempleWallet can return the user's address
-      const userAddress = wallet.pkh || (await wallet.getPKH());
-      console.log(userAddress);
-      setwalletaddress(userAddress);
-      setWalletaddress(userAddress);
-      setwalletconnection(true);
-      setisconnected(true);
+      window.ethereum.request({method:'eth_requestAccounts'})
+      .then(res=>{
+              setisconnected(true);
+              setwalletaddress(res[0]);
+              setWalletaddress(res[0]);
+              setwalletconnection(true);
+      })
     } catch (err) {
+      alert("check Your wallet connection request already send");
       console.log(err.message);
+      setisconnected(false);
+      setwalletconnection(false);
     }
   };
   return (
